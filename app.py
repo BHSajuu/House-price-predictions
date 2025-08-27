@@ -4,7 +4,6 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Load the trained model and pipeline
 model = joblib.load("model.pkl")
 pipeline = joblib.load("pipeline.pkl")
 
@@ -14,7 +13,6 @@ def home():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    # Get the input values from the form
     longitude = float(request.form["longitude"])
     latitude = float(request.form["latitude"])
     housing_median_age = float(request.form["housing_median_age"])
@@ -25,7 +23,6 @@ def predict():
     median_income = float(request.form["median_income"])
     ocean_proximity = request.form["ocean_proximity"]
 
-    # Create a pandas DataFrame from the input data
     input_data = pd.DataFrame(
         {
             "longitude": [longitude],
@@ -40,16 +37,11 @@ def predict():
         }
     )
 
-    # Preprocess the input data using the loaded pipeline
     input_data_prepared = pipeline.transform(input_data)
 
-    # Make a prediction
     prediction = model.predict(input_data_prepared)
 
     return render_template(
         "index.html",
         prediction_text=f"Predicted House Price: ${prediction[0]:,.2f}",
     )
-
-if __name__ == "__main__":
-    app.run(debug=True)
