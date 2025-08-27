@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Housing Price Prediction</title>
+    <title>Housing Price Predictor Pro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
+    <div class="glass-container">
         <header>
-            <h1>California Housing Price Prediction</h1>
-            <p>Enter the details below to get an estimated price</p>
+            <div class="header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0L2.47 11.47a.75.75 0 101.06 1.06l8.69-8.69z" />
+                  <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                </svg>
+            </div>
+            <h1>Housing Price Predictor Pro</h1>
+            <p>Leveraging AI to estimate California housing values</p>
         </header>
         <form action="{{ url_for('predict') }}" method="post">
-            <div class="form-row">
+            <div class="form-grid">
                 <div class="form-group">
                     <label for="longitude">Longitude</label>
                     <input type="text" id="longitude" name="longitude" placeholder="-122.23" required="required" />
@@ -23,40 +31,35 @@
                     <label for="latitude">Latitude</label>
                     <input type="text" id="latitude" name="latitude" placeholder="37.88" required="required" />
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group">
                     <label for="housing_median_age">Housing Median Age</label>
-                    <input type="text" id="housing_median_age" name="housing_median_age" placeholder="41" required="required" />
+                    <input type="text" id="housing_median_age" name="housing_median_age" placeholder="e.g., 41" required="required" />
                 </div>
                 <div class="form-group">
                     <label for="total_rooms">Total Rooms</label>
-                    <input type="text" id="total_rooms" name="total_rooms" placeholder="880" required="required" />
+                    <input type="text" id="total_rooms" name="total_rooms" placeholder="e.g., 880" required="required" />
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group">
                     <label for="total_bedrooms">Total Bedrooms</label>
-                    <input type="text" id="total_bedrooms" name="total_bedrooms" placeholder="129" required="required" />
+                    <input type="text" id="total_bedrooms" name="total_bedrooms" placeholder="e.g., 129" required="required" />
                 </div>
                 <div class="form-group">
                     <label for="population">Population</label>
-                    <input type="text" id="population" name="population" placeholder="322" required="required" />
+                    <input type="text" id="population" name="population" placeholder="e.g., 322" required="required" />
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group">
                     <label for="households">Households</label>
-                    <input type="text" id="households" name="households" placeholder="126" required="required" />
+                    <input type="text" id="households" name="households" placeholder="e.g., 126" required="required" />
                 </div>
                 <div class="form-group">
                     <label for="median_income">Median Income (in tens of thousands)</label>
-                    <input type="text" id="median_income" name="median_income" placeholder="8.3252" required="required" />
+                    <input type="text" id="median_income" name="median_income" placeholder="e.g., 8.3252" required="required" />
                 </div>
             </div>
-            <div class="form-group">
+             <div class="form-group full-width">
                 <label for="ocean_proximity">Ocean Proximity</label>
                 <select id="ocean_proximity" name="ocean_proximity" required="required">
+                    <option value="" disabled selected>Select an option...</option>
                     <option value="NEAR BAY">NEAR BAY</option>
                     <option value="<1H OCEAN">&lt;1H OCEAN</option>
                     <option value="INLAND">INLAND</option>
@@ -64,11 +67,12 @@
                     <option value="ISLAND">ISLAND</option>
                 </select>
             </div>
-            <button type="submit" class="btn">Predict Price</button>
+            <button type="submit" class="btn">Calculate Estimated Price</button>
         </form>
         {% if prediction_text %}
-        <div class="prediction">
-            <h2>{{ prediction_text }}</h2>
+        <div class="prediction-result">
+            <p>Estimated Property Value</p>
+            <h2>{{ prediction_text.split('$')[1] }}</h2>
         </div>
         {% endif %}
     </div>
