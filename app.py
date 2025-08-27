@@ -1,11 +1,18 @@
 from flask import Flask, request, render_template
 import joblib
 import pandas as pd
+import os 
 
 app = Flask(__name__)
 
-model = joblib.load("model.pkl")
-pipeline = joblib.load("pipeline.pkl")
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
+pipeline_path = os.path.join(BASE_DIR, "pipeline.pkl")
+model_path = os.path.join(BASE_DIR, "model.pkl")
+
+pipeline = joblib.load(pipeline_path)
+model = joblib.load(model_path)
+
 
 @app.route("/")
 def home():
@@ -41,7 +48,9 @@ def predict():
 
     prediction = model.predict(input_data_prepared)
 
+    prediction_text = f"Predicted House Price: ${prediction[0]:,.2f}"
+
     return render_template(
         "index.html",
-        prediction_text=f"Predicted House Price: ${prediction[0]:,.2f}",
+        prediction_text=prediction_text,
     )
